@@ -1,7 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import ReposCard from './repos';
-import { Container } from '@mantine/core';
+import { Button, Container, Group } from '@mantine/core';
 
 export function App() {
   const [repos, setRepos] = useState([
@@ -26,9 +26,33 @@ export function App() {
     };
     getRepos();
   }, []);
+
+  const buttons = repos.reduce(
+    (acc, cv) => {
+      if (!acc.includes(cv.language)) {
+        acc.push(cv.language);
+      }
+      return acc;
+    },
+    [repos]
+  );
+
+  buttons.shift();
+
+  const handleClick = (language) => {
+    const filterByLanguage = repos.filter((repo) => repo.language === language);
+    setRepos(filterByLanguage);
+  };
   return (
     <div className="App">
-      <h1>Test</h1>
+      <h1>SilverOrange Repositories</h1>
+      <Group>
+        {buttons.map((button, index) => (
+          <Button key={index} onClick={() => handleClick(button)}>
+            {button}
+          </Button>
+        ))}
+      </Group>
       <Container sx={{ width: '100vw' }}>
         {repos.map((repo, index) => (
           <ReposCard key={index} repo={repo} />
