@@ -1,25 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-
 import './App.css';
+import { useEffect } from 'react';
 
 export function App() {
+  const fetchRepos = async () =>
+    await fetch('http://localhost:4000/repos', { mode: 'cors' });
+  useEffect(() => {
+    const getRepos = async () => {
+      const data = await fetchRepos();
+      const repos: [] = await data.json();
+      console.log(repos);
+    };
+    getRepos();
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Test</h1>
     </div>
   );
 }
+
+/*Action plan:
+
+  Fetch from my API
+  Create a component to display info
+  Map all the fetch results into the component
+
+*/
