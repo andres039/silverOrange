@@ -11,9 +11,10 @@ repos.get('/', async (_: Request, res: Response) => {
   res.status(200);
 
   // TODO: See README.md Task (A). Return repo data here. You’ve got this!
-  const getRepos = async () => await axios('https://api.github.com/users/silverorange/repos')
-  const onlineReposResponse = await getRepos()
+
+  const onlineReposResponse = await axios('https://api.github.com/users/silverorange/repos')
   const onlineRepos = await onlineReposResponse.data
-  
-  res.json(onlineRepos.concat(jsonRepos));
+  const combinedRepos = onlineRepos.concat(jsonRepos)
+  const filteredRepos = combinedRepos.filter((repo:any) => !repo.fork)
+  res.json(filteredRepos);
 });
