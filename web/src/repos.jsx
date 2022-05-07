@@ -7,6 +7,7 @@ const ReposCard = ({ repo }) => {
       <Text weight={800}>Description: {repo.description}</Text>
       <Text weight={800}>Language: {repo.language}</Text>
       <Text weight={800}>Fork Count: {repo.forks}</Text>
+      <Text weight={800}>Creation date: {repo.created_at}</Text>
     </Card>
   );
 };

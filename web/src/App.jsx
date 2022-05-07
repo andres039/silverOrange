@@ -10,6 +10,7 @@ export function App() {
       description: 'test',
       language: 'test',
       forkCount: 0,
+      creationDate: '',
     },
   ]);
   const fetchRepos = async () =>
@@ -18,8 +19,10 @@ export function App() {
     const getRepos = async () => {
       const data = await fetchRepos();
       const reposData = await data.json();
-      setRepos(reposData);
-      console.log(reposData);
+      const reposDataInOrder = await reposData.sort((a, b) =>
+        a.created_at < b.created_at ? 1 : -1
+      );
+      setRepos(reposDataInOrder);
     };
     getRepos();
   }, []);
@@ -34,11 +37,3 @@ export function App() {
     </div>
   );
 }
-
-/*Action plan:
-
-  Fetch from my API
-  Create a component to display info
-  Map all the fetch results into the component
-
-*/
