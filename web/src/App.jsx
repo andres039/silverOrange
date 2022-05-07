@@ -1,7 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import ReposCard from './repos';
-import { Button, Container, Group } from '@mantine/core';
+import ReposCard from './Repos';
+import { Button, Center, Container, Group, Space, Stack } from '@mantine/core';
 
 export function App() {
   const [repos, setRepos] = useState([
@@ -51,20 +51,36 @@ export function App() {
     const filterByLanguage = repos.filter((repo) => repo.language === language);
     setDisplayRepos(filterByLanguage);
   };
+
   return (
     <div className="App">
       <h1>SilverOrange Repositories</h1>
-      <Group>
-        {buttons.map((button, index) => (
-          <Button key={index} onClick={() => handleClick(button)}>
-            {button}
-          </Button>
-        ))}
-      </Group>
+      <h3>Languages:</h3>
+      <Container>
+        <Center>
+          <Group>
+            <Button
+              onClick={() => {
+                setDisplayRepos(repos);
+              }}
+            >
+              All
+            </Button>
+            {buttons.map((button, index) => (
+              <Button key={index} onClick={() => handleClick(button)}>
+                {button}
+              </Button>
+            ))}
+          </Group>
+        </Center>
+      </Container>
+      <Space h="md" />
       <Container sx={{ width: '100vw' }}>
-        {displayRepos.map((repo, index) => (
-          <ReposCard key={index} repo={repo} />
-        ))}
+        <Stack>
+          {displayRepos.map((repo, index) => (
+            <ReposCard key={index} repo={repo} />
+          ))}
+        </Stack>
       </Container>
     </div>
   );
