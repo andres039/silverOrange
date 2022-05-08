@@ -1,49 +1,56 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import ReposCard from './Repos';
-import { Button, Center, Container, Group, Space, Stack } from '@mantine/core';
+import {
+  Button,
+  Center,
+  Container,
+  Group,
+  Notification,
+  Space,
+  Stack,
+} from '@mantine/core';
 
 export function App() {
   const [repos, setRepos] = useState([
     {
-      name: 'Hello',
-      description: 'test',
-      language: 'test',
-      forkCount: 0,
+      name: '',
+      description: '',
+      language: '',
+      forkCount: '',
       creationDate: '',
     },
   ]);
-
   const [displayRepos, setDisplayRepos] = useState([]);
   const [buttons, setButtons] = useState([]);
-  const fetchRepos = async () =>
-    await fetch('http://localhost:4000/repos', { mode: 'cors' });
-
-  useEffect(() => {
-    const getRepos = async () => {
-      try {
-        const data = await fetchRepos();
-        if (!data.ok) {
-          throw new Error();
-        }
-        const reposData = await data.json();
-        const reposDataInOrder = reposData.sort((a, b) =>
-          a.created_at < b.created_at ? 1 : -1
-        );
-        console.log(reposDataInOrder);
-        setRepos(reposDataInOrder);
-        const languages = await reposData.reduce((acc, cv) => {
-          if (!acc.includes(cv.language)) {
-            acc.push(cv.language);
-          }
-          return acc;
-        }, []);
-        setButtons(languages);
-        setDisplayRepos(reposDataInOrder);
-      } catch (err) {
-        console.error('message', err);
+  const [error, setError] = useState(false);
+  const getRepos = async () => {
+    try {
+      const data = await fetch('http://localhost:4000/repos', { mode: 'cors' });
+      if (!data.ok) {
+        const { status, statusText, url } = data;
+        throw Error(`${status}, ${statusText} in fetch ${url}`);
       }
-    };
+      const reposData = await data.json();
+      const reposDataInOrder = await reposData.sort((a, b) =>
+        a.created_at < b.created_at ? 1 : -1
+      );
+      console.log(reposDataInOrder);
+      setRepos(reposDataInOrder);
+      const languages = await reposData.reduce((acc, cv) => {
+        if (!acc.includes(cv.language)) {
+          acc.push(cv.language);
+        }
+        return acc;
+      }, []);
+      setButtons(languages);
+      setDisplayRepos(reposDataInOrder);
+    } catch (err) {
+      setError(true);
+      console.error(err);
+    }
+  };
+  useEffect(() => {
     getRepos();
   }, []);
 
@@ -82,6 +89,11 @@ export function App() {
           ))}
         </Stack>
       </Container>
+      {error && (
+        <Notification color="red" title="There has been a wild error. ">
+          Please refresh the page.
+        </Notification>
+      )}
     </div>
   );
 }

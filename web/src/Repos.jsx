@@ -36,12 +36,11 @@ const ReposCard = ({ repo }) => {
   return (
     <Container>
       <button onClick={() => openRepo()} style={{ maxWidth: '40vw' }}>
-        <Card sx={{ maxWidth: '40vw' }} shadow="sm">
+        <Card sx={{ minWidth: '30vw' }} shadow="sm">
           <Text weight={800}>Name: {repo.name}</Text>
           <Text weight={800}>Description: {repo.description}</Text>
           <Text weight={800}>Language: {repo.language}</Text>
-          <Text weight={800}>Fork Count: {repo.forks}</Text>
-          <Text weight={800}>Creation date: {repo.created_at}</Text>
+          <Text weight={800}>Forks Count: {repo.forks}</Text>
         </Card>
       </button>
       <Modal opened={opened} onClose={() => setOpened(false)} size="xl">
