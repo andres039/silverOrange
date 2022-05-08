@@ -20,7 +20,6 @@ const ReposCard = ({ repo }) => {
     const commitDataInOrder = await commitData.sort((a, b) =>
       a.created_at < b.created_at ? -1 : 1
     );
-    console.log('commit', commitDataInOrder);
 
     setCommit({
       author: commitDataInOrder[0].commit.author.name,

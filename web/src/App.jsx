@@ -35,7 +35,7 @@ export function App() {
       const reposDataInOrder = await reposData.sort((a, b) =>
         a.created_at < b.created_at ? 1 : -1
       );
-      console.log(reposDataInOrder);
+
       setRepos(reposDataInOrder);
       const languages = await reposData.reduce((acc, cv) => {
         if (!acc.includes(cv.language)) {

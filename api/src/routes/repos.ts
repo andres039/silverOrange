@@ -14,12 +14,12 @@ repos.get('/', async (_: Request, res: Response) => {
   async function getData() {
     try {
       const response = await axios.get(`${process.env.URL}`);
-      return response.data
+      return response.data;
     } catch (error) {
       console.error(error);
     }
   }
-  const data = await getData()
+  const data = await getData();
   const combinedRepos = data.concat(jsonRepos);
   const filteredRepos = combinedRepos.filter((repo: any) => !repo.fork);
   res.json(filteredRepos);
